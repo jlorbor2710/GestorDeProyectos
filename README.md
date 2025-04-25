@@ -35,7 +35,6 @@ El objetivo principal del sistema es proporcionar una plataforma que permita a l
 
 ### Colaboración:
 - Comentarios en tareas para facilitar la comunicación entre los usuarios.
-- Subida y gestión de archivos relacionados con las tareas.
 
 ### Historial y Seguimiento:
 - Registro de cambios en las tareas (historial de modificaciones).
