@@ -37,10 +37,9 @@ public class Main {
             System.out.println("16. Comentar una tarea");
             System.out.println("17. Listar comentarios de una tarea");
             System.out.println("18. Eliminar comentario");
-            System.out.println("19. Obtener porcentaje completado de proyecto");
-            System.out.println("20. Eliminar tarea");
-            System.out.println("21. Eliminar usuario");
-            System.out.println("22. Eliminar proyecto");
+            System.out.println("19. Eliminar tarea");
+            System.out.println("20. Eliminar usuario");
+            System.out.println("21. Eliminar proyecto");
             System.out.println("0. Salir");
             System.out.print("Opción: ");
             
