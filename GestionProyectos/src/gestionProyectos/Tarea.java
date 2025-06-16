@@ -14,7 +14,17 @@ public class Tarea {
 	Prioridad prioridad;
 	List<Comentario> comentarios;
 	
-	public Tarea(int idProyecto, int idTarea, String nombre, String descripcion, LocalDate fechaLimite, Prioridad prioridad) {
+	public Tarea(int idProyecto, String nombre, String descripcion, LocalDate fechaLimite, Prioridad prioridad) {
+        this.idProyecto = idProyecto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fechaLimite = fechaLimite;
+        this.prioridad = prioridad;
+        this.estado = EstadoTarea.PENDIENTE;
+        this.comentarios = new ArrayList<>();
+    }
+	
+	public Tarea(int idProyecto,int idTarea, String nombre, String descripcion, LocalDate fechaLimite, Prioridad prioridad, EstadoTarea estado) {
         this.idProyecto = idProyecto;
         this.idTarea = idTarea;
         this.nombre = nombre;

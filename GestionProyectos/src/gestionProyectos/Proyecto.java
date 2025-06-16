@@ -14,8 +14,18 @@ public class Proyecto {
 	List<Tarea> tareas;
 	List<UsuarioProy> miembros;
 	
-	 public Proyecto(int idProyecto, String nombre, String descripcion, LocalDate fechaIni, LocalDate fechaFin) {
+	 public Proyecto(int idProyecto, String nombre, String descripcion, LocalDate fechaIni, LocalDate fechaFin, EstadoProyecto estado) {
 	        this.idProyecto = idProyecto;
+	        this.nombre = nombre;
+	        this.descripcion = descripcion;
+	        this.fechaInicio = fechaIni;
+	        this.fechaFin = fechaFin;
+	        this.estado = estado;
+	        this.tareas = new ArrayList<>();
+	        this.miembros = new ArrayList<>();
+	    }
+	 
+	 public Proyecto(String nombre, String descripcion, LocalDate fechaIni, LocalDate fechaFin) {
 	        this.nombre = nombre;
 	        this.descripcion = descripcion;
 	        this.fechaInicio = fechaIni;
@@ -157,22 +167,10 @@ public class Proyecto {
 		this.miembros.remove(miembro);
 	}
 	
-	public double obtenerPorcentajeCompletado() {
-		int tareasCompletadas = 0;
-		for (Tarea tarea : tareas) {
-			if (tarea.getEstado() == EstadoTarea.COMPLETADO) {
-				tareasCompletadas++;
-			}
-		}
-		return (double) tareasCompletadas / tareas.size() * 100;
-	}
-	
 	public List<Tarea> ListarTareas() {
 		return tareas;
 	}
 	
-	public List<UsuarioProy> ListarMiembros() {
-		return miembros;
-	}
+	
 
 }

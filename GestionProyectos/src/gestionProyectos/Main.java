@@ -43,8 +43,15 @@ public class Main {
             System.out.println("22. Eliminar proyecto");
             System.out.println("0. Salir");
             System.out.print("Opción: ");
-            opcion = Integer.parseInt(sc.nextLine());
-
+            
+            if (sc.hasNextInt()) {
+            	opcion = sc.nextInt();
+            	sc.nextLine();
+            
+            
+            
+            
+            
             switch (opcion) {
                 case 1 -> crearUsuario();
                 case 2 -> listarUsuarios();
@@ -64,14 +71,19 @@ public class Main {
                 case 16 -> comentarTarea();
                 case 17 -> listarComentariosTarea();
                 case 18 -> eliminarComentario();
-                case 19 -> obtenerPorcentajeCompletadoProyecto();
-                case 20 -> eliminarTarea();
-                case 21 -> eliminarUsuario();
-                case 22 -> eliminarProyecto();
+                case 19 -> eliminarTarea();
+                case 20 -> eliminarUsuario();
+                case 21 -> eliminarProyecto();
                 case 0 -> System.out.println("¡Hasta luego!");
                 default -> System.out.println("Opción inválida.");
             }
+            } else {
+				System.out.println("Por favor, ingrese un número válido.");
+				sc.nextLine();
+				opcion = -1; 
+			}
         } while (opcion != 0);
+        
     }
 
     private static void crearUsuario() {
@@ -188,8 +200,6 @@ public class Main {
 
     private static void crearProyecto() {
         try {
-            System.out.print("ID Proyecto: ");
-            int idProyecto = Integer.parseInt(sc.nextLine());
             System.out.print("Nombre: ");
             String nombre = sc.nextLine();
             System.out.print("Descripción: ");
@@ -198,7 +208,7 @@ public class Main {
             LocalDate fechaIni = LocalDate.parse(sc.nextLine());
             System.out.print("Fecha fin (YYYY-MM-DD): ");
             LocalDate fechaFin = LocalDate.parse(sc.nextLine());
-            Proyecto proyecto = new Proyecto(idProyecto, nombre, descripcion, fechaIni, fechaFin);
+            Proyecto proyecto = new Proyecto(nombre, descripcion, fechaIni, fechaFin);
             proyectoDAO.guardar(proyecto);
             System.out.println("Proyecto creado correctamente.");
         } catch (Exception e) {
@@ -260,7 +270,7 @@ public class Main {
             int idProyecto = Integer.parseInt(sc.nextLine());
             Proyecto proyecto = proyectoDAO.buscarPorId(idProyecto);
             if (proyecto != null) {
-                List<UsuarioProy> miembros = proyecto.ListarMiembros();
+                List<UsuarioProy> miembros = proyectoDAO.ListarMiembros(idProyecto);
                 if (miembros.isEmpty()) {
                     System.out.println("No hay miembros en este proyecto.");
                 } else {
@@ -276,8 +286,8 @@ public class Main {
 
     private static void crearTarea() {
         try {
-            System.out.print("ID Tarea: ");
-            int idTarea = Integer.parseInt(sc.nextLine());
+            //System.out.print("ID Tarea: ");
+            //int idTarea = Integer.parseInt(sc.nextLine());
             System.out.print("ID Proyecto: ");
             int idProyecto = Integer.parseInt(sc.nextLine());
             System.out.print("Nombre: ");
@@ -288,7 +298,7 @@ public class Main {
             LocalDate fechaLimite = LocalDate.parse(sc.nextLine());
             System.out.print("Prioridad (ALTA/MEDIA/BAJA): ");
             Prioridad prioridad = Prioridad.valueOf(sc.nextLine().toUpperCase());
-            Tarea tarea = new Tarea(idProyecto, idTarea, nombre, descripcion, fechaLimite, prioridad);
+            Tarea tarea = new Tarea(idProyecto, nombre, descripcion, fechaLimite, prioridad);
             tareaDAO.guardar(tarea);
             System.out.println("Tarea creada correctamente.");
         } catch (Exception e) {
@@ -304,7 +314,7 @@ public class Main {
             if (tareas.isEmpty()) {
                 System.out.println("No hay tareas para ese proyecto.");
             } else {
-                tareas.forEach(t -> System.out.println("ID: " + t.getIdTarea() + " - " + t.getNombre() + " (" + t.getDescripcion() + ") - Estado: " + t.getEstado()));
+                tareas.forEach(t -> System.out.println("ID: " + t.getIdTarea() + " - " + t.getNombre() + " (" + t.getDescripcion() + ") - Estado: " + t.getEstado() + " - Prioridad: " + t.getPrioridad()));
             }
         } catch (SQLException e) {
             System.out.println("Error al listar tareas: " + e.getMessage());
@@ -320,6 +330,7 @@ public class Main {
             Tarea tarea = tareaDAO.buscarPorId(idTarea);
             if (tarea != null) {
                 tarea.setEstado(estado);
+                System.out.println(tarea.getEstado());
                 tareaDAO.actualizar(tarea);
                 System.out.println("Estado de la tarea actualizado.");
             } else {
@@ -391,21 +402,6 @@ public class Main {
         }
     }
 
-    private static void obtenerPorcentajeCompletadoProyecto() {
-        try {
-            System.out.print("ID Proyecto: ");
-            int idProyecto = Integer.parseInt(sc.nextLine());
-            Proyecto proyecto = proyectoDAO.buscarPorId(idProyecto);
-            if (proyecto != null) {
-                double porcentaje = proyecto.obtenerPorcentajeCompletado();
-                System.out.println("Porcentaje completado: " + porcentaje + "%");
-            } else {
-                System.out.println("Proyecto no encontrado.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener porcentaje: " + e.getMessage());
-        }
-    }
 
     private static void eliminarTarea() {
         try {
