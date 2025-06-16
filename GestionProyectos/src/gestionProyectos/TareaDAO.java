@@ -34,7 +34,8 @@ public class TareaDAO {
                         rs.getString("nombre"),
                         rs.getString("descripción"),
                         rs.getDate("fecha_limite").toLocalDate(),
-                        Prioridad.valueOf(rs.getString("prioridad"))
+                        Prioridad.valueOf(rs.getString("prioridad")),
+                        EstadoTarea.valueOf(rs.getString("estado"))
                 );
             }
         }
@@ -55,7 +56,9 @@ public class TareaDAO {
                         rs.getString("nombre"),
                         rs.getString("descripción"),
                         rs.getDate("fecha_limite").toLocalDate(),
-                        Prioridad.valueOf(rs.getString("prioridad"))
+                        Prioridad.valueOf(rs.getString("prioridad")),
+                        EstadoTarea.valueOf(rs.getString("estado"))
+
                 );
                 lista.add(tarea);
             }
@@ -74,7 +77,11 @@ public class TareaDAO {
             stmt.setString(5, tarea.getPrioridad().toString());
             stmt.setInt(6, tarea.getIdTarea());
             stmt.executeUpdate();
-        }
+        } 
+        catch (SQLException e) {
+			e.printStackTrace();
+			throw e; // Re-throw the exception for further handling
+		}
     }
 
     public void eliminar(int idTarea) throws SQLException {

@@ -34,6 +34,7 @@ public class ProyectoDAO {
                         rs.getString("descripción"),
                         rs.getDate("fecha_inicio").toLocalDate(),
                         rs.getDate("fecha_fin").toLocalDate()
+                        , rs.getString("estado") != null ? EstadoProyecto.valueOf(rs.getString("estado").toUpperCase()) : EstadoProyecto.PENDIENTE
                 );
             }
         }
@@ -52,7 +53,8 @@ public class ProyectoDAO {
                         rs.getString("nombre"),
                         rs.getString("descripción"),
                         rs.getDate("fecha_inicio").toLocalDate(),
-                        rs.getDate("fecha_fin").toLocalDate()
+                        rs.getDate("fecha_fin").toLocalDate(),
+                        rs.getString("estado") != null ? EstadoProyecto.valueOf(rs.getString("estado").toUpperCase()) : EstadoProyecto.PENDIENTE
                 );
                 lista.add(proyecto);
             }
@@ -81,5 +83,25 @@ public class ProyectoDAO {
             stmt.setInt(1, idProyecto);
             stmt.executeUpdate();
         }
+    }
+    
+    public List<UsuarioProy> ListarMiembros(int idProyecto) throws SQLException {
+    	List<UsuarioProy> lista = new ArrayList<>();
+        String sql = "SELECT * FROM USUARIO_PROY WHERE id_proyecto = ?";
+        try (Connection conn = ConexionBD.obtenerConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idProyecto);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                UsuarioProy usuario = new UsuarioProy(
+                		rs.getInt("id_usuario"),
+                        rs.getInt("id_proyecto"),
+                        Rol.valueOf(rs.getString("rol_asignado"))
+                        
+                );
+                lista.add(usuario);
+            }
+        }
+        return lista;
     }
 }
